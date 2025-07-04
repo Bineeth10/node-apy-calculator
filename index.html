@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shardeum Node APY Calculator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    h2 {
+      text-align: center;
+      color: #e96c28; /* Shardeum orange */
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #e96c28;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .output {
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .output p {
+      margin: 5px 0;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 20px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h2>Shardeum Node APY Calculator</h2>
+
+  <label>Node Price (USD)</label>
+  <input type="number" id="nodePrice" placeholder="e.g. 1000" />
+
+  <label>Running Cost per Month (USD)</label>
+  <input type="number" id="runningCost" placeholder="e.g. 20" />
+
+  <label>Monthly SHM Rewards</label>
+  <input type="number" id="shmRewards" placeholder="e.g. 50" />
+
+  <label>SHM Price (USD)</label>
+  <input type="number" id="shmPrice" placeholder="e.g. 0.12" />
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="output" id="output"></div>
+
+  <footer>
+    APY is simplified as ROI without compounding.
+  </footer>
+
+  <script>
+    function calculate() {
+      const nodePrice = parseFloat(document.getElementById('nodePrice').value) || 0;
+      const runningCost = parseFloat(document.getElementById('runningCost').value) || 0;
+      const shmRewards = parseFloat(document.getElementById('shmRewards').value) || 0;
+      const shmPrice = parseFloat(document.getElementById('shmPrice').value) || 0;
+
+      const monthlyEarnings = (shmRewards * shmPrice) - runningCost;
+      const annualEarnings = monthlyEarnings * 12;
+      const roi = nodePrice !== 0 ? (annualEarnings / nodePrice) * 100 : 0;
+      const apy = roi; // Simplified as ROI here
+
+      const out = `
+        <p><strong>Monthly Earnings:</strong> $${monthlyEarnings.toFixed(2)}</p>
+        <p><strong>Annual Earnings:</strong> $${annualEarnings.toFixed(2)}</p>
+        <p><strong>ROI:</strong> ${roi.toFixed(2)}%</p>
+        <p><strong>APY:</strong> ${apy.toFixed(2)}%</p>
+      `;
+      document.getElementById('output').innerHTML = out;
+    }
+  </script>
+</body>
+</html>
